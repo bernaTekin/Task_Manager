@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="UserDashBoardStyle.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-buttons">
+        <button onclick="changePassword()">Şifre Değiştir</button>
+        <button onclick="logout()">Çıkış Yap</button>
+    </div>
+</div>
+
+<div class="content-area">
+    <button id="sidebar-toggle" title="Menüyü Gizle/Göster">
+        <div class="hamburger-icon">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </button>
+
+    <div class="main-container">
+        <h1>Yeni Talep Oluştur</h1>
+        <input type="text" id="taskHeader" placeholder="Talep Başlığı">
+        <textarea id="requestInput" placeholder="Talebinizi buraya yazın..."></textarea>
+        <button class="submit-button" onclick="submitRequest()">Gönder</button>
+    </div>
+</div>
+
+<script src="UserDashBoardScript.js"></script>
+<script>
+    if (!localStorage.getItem("companyId")) {
+      window.location.href = "http://localhost:8080/task/login";
+    }
+</script>
+
+<script>
+    // Toggle butonuna tıklandığında body elementine 'sidebar-collapsed' class'ını ekler/kaldırır.
+    document.getElementById('sidebar-toggle').addEventListener('click', function() {
+        document.body.classList.toggle('sidebar-collapsed');
+    });
+</script>
+
+</body>
+</html>

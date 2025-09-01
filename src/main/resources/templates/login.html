@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="login-container">
+    <h1>Giriş</h1>
+    <form id="login-form">
+        <div class="input-group">
+            <label for="company_id">Kullanıcı Adı (Company ID)</label>
+            <input type="text" id="company_id" name="company_id" placeholder="Kullanıcı adınızı girin" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Şifre</label>
+            <input type="password" id="password" name="password" placeholder="Şifrenizi girin" required>
+        </div>
+        <button type="submit" class="login-btn">Giriş Yap</button>
+    </form>
+    <div id="message" class="message"></div>
+</div>
+
+<script src="/script.js"></script>
+</body>
+</html>

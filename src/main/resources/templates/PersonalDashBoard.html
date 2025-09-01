@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Personel Paneli</title>
+    <link rel="stylesheet" href="/PersonalDashBoardStyle.css">
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="top-bar-buttons">
+        <button onclick="changePassword()">Şifre Değiştir</button>
+        <button onclick="logout()">Çıkış Yap</button>
+    </div>
+</div>
+<h1>Görev Yönetimi - Personel Paneli</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th class="col-id">ID</th>
+        <th>Ad Soyad</th>
+        <th>Başlık</th>
+        <th>İçerik</th>
+        <th>Durum</th>
+        <th>Departman</th> <th>Zamanlar</th>
+        <th>İşlemler</th>
+    </tr>
+    </thead>
+    <tbody id="reportBody">
+    </tbody>
+</table>
+
+<script src="/PersonalDashBoardScript.js"></script>
+
+<script>
+    if (!localStorage.getItem("companyId")) {
+        window.location.href = "http://localhost:8080/task/login";
+    }
+</script>
+</body>
+</html>

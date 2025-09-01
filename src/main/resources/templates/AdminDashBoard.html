@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Paneli</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/AdminDashBoardStyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2 id="admin-name">Yükleniyor...</h2>
+    </div>
+    <ul class="sidebar-nav">
+        <li><a href="#" onclick="handleHomepageClick(); return false;">Anasayfa</a></li>
+        <li><a href="#" onclick="showPage('task-management-content'); return false;">Görev Yönetimi</a></li>
+        <li><a href="#" onclick="openMonthlyReports(); return false;">Raporları Göster</a></li>
+        <li><a href="#" onclick="openUserInfoModal(); return false;">Personel Bilgileri</a></li>
+        <li><a href="#" onclick="openAddUserModal(); return false;">Kullanıcı Ekle</a></li>
+        <li><a href="#" onclick="changePassword(); return false;">Şifre Değiştir</a></li>
+        <li><a href="#" onclick="logout(); return false;">Çıkış Yap</a></li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="top-bar">
+        <button id="sidebar-toggle-btn" onclick="toggleSidebar()">
+            <div class="hamburger-icon">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </button>
+    </div>
+
+    <div id="homepage-content" class="page-content">
+        <h1>Anasayfa - Görev Dağılımları</h1>
+        <div id="charts-container">
+            <div class="chart-wrapper">
+                <canvas id="taskStatusChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="assignedPersonnelChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="departmentChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="task-management-content" class="page-content" style="display: none;">
+        <h1>Görev Yönetimi - Admin Paneli</h1>
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label for="filterStatus">Durum</label>
+                <select id="filterStatus">
+                    <option value="">Tümü</option>
+                    <option value="BEKLIYOR">Bekliyor</option>
+                    <option value="ATANDI">Atandı</option>
+                    <option value="TAMAMLANDI">Tamamlandı</option>
+                    <option value="IPTAL">İptal</option>
+                    <option value="REDDEDILDI">Reddedildi (İptal Talebi)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filterSender">Gönderen</label>
+                <input type="text" id="filterSender" placeholder="Gönderen ismini yazın...">
+            </div>
+            <div class="filter-group">
+                <label for="filterDepartment">Departman</label>
+                <select id="filterDepartment">
+                    <option value="">Tümü</option>
+                    <option value="YAZILIM">Yazılım</option>
+                    <option value="DONANIM">Donanım</option>
+                    <option value="HEPSI">Hepsi</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filterPersonnel">Atanmış Personel</label>
+                <select id="filterPersonnel">
+                    <option value="">Tümü</option>
+                </select>
+            </div>
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <label for="filterCreatedStart">Oluşturulma Tarihi (Başlangıç)</label>
+                    <input type="date" id="filterCreatedStart">
+                </div>
+                <div class="filter-group">
+                    <label for="filterCreatedEnd">Oluşturulma Tarihi (Bitiş)</label>
+                    <input type="date" id="filterCreatedEnd">
+                </div>
+            </div>
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <label for="filterAssignedStart">Atanma Tarihi (Başlangıç)</label>
+                    <input type="date" id="filterAssignedStart">
+                </div>
+                <div class="filter-group">
+                    <label for="filterAssignedEnd">Atanma Tarihi (Bitiş)</label>
+                    <input type="date" id="filterAssignedEnd">
+                </div>
+            </div>
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <label for="filterCompletedStart">Tamamlanma Tarihi (Başlangıç)</label>
+                    <input type="date" id="filterCompletedStart">
+                </div>
+                <div class="filter-group">
+                    <label for="filterCompletedEnd">Tamamlanma Tarihi (Bitiş)</label>
+                    <input type="date" id="filterCompletedEnd">
+                </div>
+            </div>
+            <div class="filter-group-row">
+                <div class="filter-group">
+                    <label for="filterRejectedStart">Reddedilme Tarihi (Başlangıç)</label>
+                    <input type="date" id="filterRejectedStart">
+                </div>
+                <div class="filter-group">
+                    <label for="filterRejectedEnd">Reddedilme Tarihi (Bitiş)</label>
+                    <input type="date" id="filterRejectedEnd">
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button id="applyFilterBtn" class="save-btn">Filtrele</button>
+                <button id="clearFilterBtn" class="reject-btn">Temizle</button>
+            </div>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th class="col-id">ID</th>
+                <th>Başlık</th>
+                <th>Gönderen Kişi</th>
+                <th>İçerik</th>
+                <th>Durum</th>
+                <th>Departman</th>
+                <th>Atanmış Personel</th>
+                <th>Zamanlar</th>
+                <th>Admin İşlemleri</th>
+                <th>İşlemler</th>
+            </tr>
+            </thead>
+            <tbody id="reportBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="monthlyModal" class="modal" aria-hidden="true" role="dialog" aria-label="Son 1 Ay İş Raporları">
+        <div class="modal-content" role="document">
+            <div class="modal-header">
+                <h2>Son 1 Ay İş Raporları</h2>
+                <button class="modal-close" aria-label="Kapat" onclick="closeMonthlyModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="monthlyLoading" class="modal-loading" hidden>Yükleniyor…</div>
+                <div id="monthlyError" class="modal-error" hidden>Bir hata oluştu.</div>
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label for="monthlyFilterStatus">Durum</label>
+                        <select id="monthlyFilterStatus">
+                            <option value="">Tümü</option>
+                            <option value="BEKLIYOR">Bekliyor</option>
+                            <option value="ATANDI">Atandı</option>
+                            <option value="TAMAMLANDI">Tamamlandı</option>
+                            <option value="IPTAL">İptal</option>
+                            <option value="REDDEDILDI">Reddedildi</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="monthlyFilterSender">Gönderen</label>
+                        <input type="text" id="monthlyFilterSender" placeholder="Gönderen...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="monthlyFilterWriter">Raporu Yazan</label>
+                        <input type="text" id="monthlyFilterWriter" placeholder="Yazan personel...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="monthlyFilterDepartment">Departman</label>
+                        <select id="monthlyFilterDepartment">
+                            <option value="">Tümü</option>
+                            <option value="YAZILIM">Yazılım</option>
+                            <option value="DONANIM">Donanım</option>
+                            <option value="HEPSI">Hepsi</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="monthlyFilterDateType">Tarih Türü</label>
+                        <select id="monthlyFilterDateType">
+                            <option value="atanmaTarihi">Atanma Tarihi</option>
+                            <option value="kabulTarihi">Kabul Tarihi</option>
+                            <option value="iptalTarihi">İptal Tarihi</option>
+                            <option value="bitisTarihi">Bitiş Tarihi</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="monthlyFilterDateStart">Başlangıç Tarihi</label>
+                        <input type="date" id="monthlyFilterDateStart">
+                    </div>
+                    <div class="filter-group">
+                        <label for="monthlyFilterDateEnd">Bitiş Tarihi</label>
+                        <input type="date" id="monthlyFilterDateEnd">
+                    </div>
+                    <div class="filter-actions">
+                        <button id="applyMonthlyFilterBtn" class="save-btn">Filtrele</button>
+                        <button id="clearMonthlyFilterBtn" class="reject-btn">Temizle</button>
+                    </div>
+                </div>
+                <div class="modal-table-wrapper">
+                    <table class="modal-table">
+                        <thead>
+                        <tr>
+                            <th class="col-id">ID</th>
+                            <th>Gönderen</th>
+                            <th>Talep Başlığı</th>
+                            <th>Talep İçeriği</th>
+                            <th>Yazan</th>
+                            <th>Rapor Başlığı</th>
+                            <th>Rapor İçeriği</th>
+                            <th>Durum</th>
+                            <th>Departman</th>
+                            <th>Atanma</th>
+                            <th>Kabul</th>
+                            <th>İptal</th>
+                            <th>Bitiş</th>
+                            <th>İndir</th>
+                        </tr>
+                        </thead>
+                        <tbody id="monthlyTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addUserModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Yeni Kullanıcı Ekle</h2>
+                <button class="modal-close" aria-label="Kapat" onclick="closeAddUserModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <label for="companyId">Şirket ID:</label>
+                        <input type="number" id="companyId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">İsim:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="surName">Soyisim:</label>
+                        <input type="text" id="surName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Şifre:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userRole">Kullanıcı Rolü:</label>
+                        <select id="userRole" required>
+                            <option value="">Seçiniz...</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="PERSONEL">PERSONEL</option>
+                            <option value="USER">USER</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="pdfPreviewModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Rapor Önizleme</h2>
+                <button class="modal-close" aria-label="Kapat" onclick="closePdfPreviewModal()">✕</button>
+            </div>
+            <div class="modal-body" style="padding: 0; height: 100%; display: flex; flex-direction: column;">
+                <iframe id="pdf-viewer" style="flex-grow: 1; border: none; width: 100%; height: 100%;"></iframe>
+            </div>
+        </div>
+    </div>
+    <div id="userInfoModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Kullanıcı Bilgileri</h2>
+                <div>
+                    <button id="editSaveUserBtn" class="save-btn" style="margin-right: 10px;">Düzenle</button>
+                    <button class="modal-close" aria-label="Kapat" onclick="closeUserInfoModal()">✕</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="user-filters">
+                    <input type="text" id="userSearchInput" placeholder="İsim, soyisim, şirket ID veya role göre ara..." style="width: 100%;">
+                </div>
+                <div class="modal-table-wrapper" style="margin-top: 15px;">
+                    <table class="modal-table" id="userInfoTable">
+                        <thead>
+                        <tr>
+                            <th>İsim</th>
+                            <th>Soyisim</th>
+                            <th>Şirket ID</th>
+                            <th>Şifre</th>
+                            <th>Rol</th>
+                            <th>Sil</th>
+                        </tr>
+                        </thead>
+                        <tbody id="userInfoTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/jspdf-autotable@3.5.23/dist/jspdf.plugin.autotable.js"></script>
+<script src="/AdminDashBoardScript.js" defer></script>
+<script>
+    if (!localStorage.getItem("companyId")) {
+      window.location.href = "http://localhost:8080/task/login";
+    }
+</script>
+
+</body>
+</html>
