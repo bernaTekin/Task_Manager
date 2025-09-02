@@ -228,6 +228,66 @@ select, button {
     padding: 5px;
 }
 
+.hover-container {
+  position: relative;
+  display: inline-block;
+}
+
+.hover-popup {
+  display: none; /* başlangıçta gizli */
+  position: absolute;
+  top: 100%; /* butonun hemen altı */
+  left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
+  border-radius: 4px;
+  width: max-content;
+}
+
+.hover-container:hover .hover-popup {
+  display: block; /* hover olunca görünür */
+}
+
+
+
+.hover-container button {
+  background-color: #008CBA; /* mavi ton */
+  color: white;               /* yazı rengi */
+  border: none;               /* kenarlık kaldır */
+  padding: 6px 12px;          /* iç boşluk */
+  border-radius: 6px;         /* kenarları yuvarlat */
+  cursor: pointer;            /* hover ile işaretçi değişir */
+  font-weight: 500;           /* yazı kalınlığı */
+  transition: background 0.3s, transform 0.2s; /* animasyon */
+}
+
+.hover-container button:hover {
+  background-color: #45a049;  /* hover rengi */
+  transform: translateY(-2px); /* hafif yukarı kayma efekti */
+}
+
+.hover-popup {
+  display: none;
+  position: absolute;
+  top: 110%; /* butonun biraz altına açılır */
+  left: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 10;
+  border-radius: 8px;
+  width: max-content;
+}
+
+.hover-container:hover .hover-popup {
+  display: block;
+}
+
+
 .action-buttons {
     display: flex;
     gap: 5px;
@@ -387,20 +447,36 @@ th.col-id, td.col-id {
     hyphens: manual;
     white-space: nowrap;
     text-align: center;
-    width: 6ch;
+    width: 2ch;
     min-width: 3ch;
 }
+
 
 /* Modallere özel hizalamalar ve boyutlandırmalar */
 .modal-table td:nth-child(8) {
     text-align: center;
-    vertical-align: middle;
+        vertical-align: middle;
+        white-space: nowrap;  /* Tek satırda kalmasını sağlar */
+        padding: 2px 4px;
+        width: 400px;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 5px;
+
+}
+.modal-table td:nth-child(8) button {
+    margin-left: -5px; /* Butonu sola doğru negatif marjin ile kaydırabiliriz */
+    /* Veya butonun kendi iç padding'ini azaltabiliriz */
+    padding: 4px 6px; /* Butonun iç boşluğunu azalt */
 }
 
 .modal-table td:nth-child(8) .status-badge {
     white-space: normal;
     width: 100%;
     box-sizing: border-box;
+     padding: 6px 6px;
+
 }
 
 #addUserModal .modal-content {

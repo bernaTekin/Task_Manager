@@ -82,7 +82,9 @@ if (!loggedInCompanyId && !loggedInUserId) {
         taskStatusChart = new Chart(ctx, {
             type: 'doughnut', data: { labels, datasets: [{ label: 'Görev Sayısı', data, backgroundColor: backgroundColors, borderColor: '#fff', borderWidth: 2 }] },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Görevlerin Durum Dağılımı', font: { size: 14 } } } }
-        });
+          });
+
+
     }
 
     function createAssignedPersonnelChart() {
@@ -177,12 +179,29 @@ if (!loggedInCompanyId && !loggedInUserId) {
         }
         row.innerHTML = `
           <td class="col-id">${report.id}</td><td>${report.header}</td><td>${report.gonderen_isim}</td><td>${report.body}</td><td><span class="status-badge ${statusClass}">${report.status}</span></td><td>${report.department || '-'}</td> <td><strong>${assignedPersonnelName}</strong></td>
-          <td><div><strong>Oluşturuldu:</strong> ${fmt(report.createdAt)}</div><div><strong>Atandı:</strong> ${fmt(report.assignedAt)}</div><div><strong>Tamamlandı:</strong> ${fmt(report.completedAt)}</div><div><strong>Reddedildi:</strong> ${fmt(report.rejectedAt)}</div></td>
+         <td>
+           <div class="hover-container">
+             <button>Zamanlar ⬇</button>
+             <div id="dates-${report.id}" class="hover-popup">
+               <div><strong>Oluşturuldu:</strong> ${fmt(report.createdAt)}</div>
+               <div><strong>Atandı:</strong> ${fmt(report.assignedAt)}</div>
+               <div><strong>Tamamlandı:</strong> ${fmt(report.completedAt)}</div>
+               <div><strong>Reddedildi:</strong> ${fmt(report.rejectedAt)}</div>
+             </div>
+           </div>
+         </td>
+
+
           <td><select id="departmentSelect-${report.id}" style="margin-bottom: 5px;"><option value="YAZILIM">Yazılım</option><option value="DONANIM">Donanım</option><option value="HEPSI">Hepsi</option></select><select id="personnelSelect-${report.id}"><option value="">Seçiniz</option>${personnelList.map(p => `<option value="${p.companyId}" ${p.id === report.personalId ? 'selected' : ''}>${p.name} ${p.surName} (${p.companyId})</option>`).join('')}</select><button class="assign-btn" onclick="assignPersonnel(${report.id})">Tamam</button></td>
           <td>${actionButtonsHtml}</td>`;
         tbody.appendChild(row);
       });
     }
+
+     function toggleDates(reportId) {
+       const datesDiv = document.getElementById(`dates-${reportId}`);
+       datesDiv.style.display = (datesDiv.style.display === 'none' || datesDiv.style.display === '') ? 'block' : 'none';
+     }
 
     function populatePersonnelFilter() {
         const select = document.getElementById('filterPersonnel');
