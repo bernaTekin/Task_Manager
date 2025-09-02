@@ -1,4 +1,3 @@
-
 // === GLOBAL FETCH HATASI YAKALAYICI ===
 
 const originalFetch = window.fetch;
@@ -151,17 +150,9 @@ if (!loggedInCompanyId && !loggedInUserId) {
         return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
       } catch { return dt; }
     }
-    const checkDate = (dateStr, start, end) => {
-        if (!start && !end) return true;
-        if (!dateStr) return false;
-        const reportDate = dateStr.substring(0, 10);
-        if (start && reportDate < start) return false;
-        if (end && reportDate > end) return false;
-        return true;
-    };
 
 
-    // === GÖREV YÖNETİMİ TABLOSU VE FİLTRELEME ===
+    // === GÖREV YÖNETİMİ TABLOSU VE FİLTRELEME (tarih filtreleri kaldırıldı) ===
     function renderTable(reportsToRender) {
       const tbody = document.getElementById('reportBody');
       tbody.innerHTML = '';
@@ -192,6 +183,7 @@ if (!loggedInCompanyId && !loggedInUserId) {
         tbody.appendChild(row);
       });
     }
+
     function populatePersonnelFilter() {
         const select = document.getElementById('filterPersonnel');
         select.innerHTML = '<option value="">Tümü</option><option value="UNASSIGNED">Atanmamış</option>';
@@ -202,12 +194,14 @@ if (!loggedInCompanyId && !loggedInUserId) {
             select.appendChild(option);
         });
     }
+
+    // Tarih alanları ve kontrolleri kaldırıldı
     function applyFiltersAndRender() {
-        const status = document.getElementById('filterStatus').value, sender = document.getElementById('filterSender').value.toLowerCase(), department = document.getElementById('filterDepartment').value, personnelId = document.getElementById('filterPersonnel').value;
-        const createdStart = document.getElementById('filterCreatedStart').value, createdEnd = document.getElementById('filterCreatedEnd').value;
-        const assignedStart = document.getElementById('filterAssignedStart').value, assignedEnd = document.getElementById('filterAssignedEnd').value;
-        const completedStart = document.getElementById('filterCompletedStart').value, completedEnd = document.getElementById('filterCompletedEnd').value;
-        const rejectedStart = document.getElementById('filterRejectedStart').value, rejectedEnd = document.getElementById('filterRejectedEnd').value;
+        const status = document.getElementById('filterStatus').value;
+        const sender = document.getElementById('filterSender').value.toLowerCase();
+        const department = document.getElementById('filterDepartment').value;
+        const personnelId = document.getElementById('filterPersonnel').value;
+
         const filteredReports = reports.filter(report => {
             if (status && report.status !== status) return false;
             if (sender && !report.gonderen_isim.toLowerCase().includes(sender)) return false;
@@ -216,18 +210,17 @@ if (!loggedInCompanyId && !loggedInUserId) {
                 if (personnelId === 'UNASSIGNED' && report.personalId) return false;
                 if (personnelId !== 'UNASSIGNED' && Number(report.personalId) !== Number(personnelId)) return false;
             }
-            if (!checkDate(report.createdAt, createdStart, createdEnd)) return false;
-            if (!checkDate(report.assignedAt, assignedStart, assignedEnd)) return false;
-            if (!checkDate(report.completedAt, completedStart, completedEnd)) return false;
-            if (!checkDate(report.rejectedAt, rejectedStart, rejectedEnd)) return false;
             return true;
         });
+
         renderTable(filteredReports);
     }
+
     function clearFiltersAndRender() {
-        document.getElementById('filterStatus').value = ''; document.getElementById('filterSender').value = ''; document.getElementById('filterDepartment').value = ''; document.getElementById('filterPersonnel').value = '';
-        document.getElementById('filterCreatedStart').value = ''; document.getElementById('filterCreatedEnd').value = ''; document.getElementById('filterAssignedStart').value = ''; document.getElementById('filterAssignedEnd').value = '';
-        document.getElementById('filterCompletedStart').value = ''; document.getElementById('filterCompletedEnd').value = ''; document.getElementById('filterRejectedStart').value = ''; document.getElementById('filterRejectedEnd').value = '';
+        document.getElementById('filterStatus').value = '';
+        document.getElementById('filterSender').value = '';
+        document.getElementById('filterDepartment').value = '';
+        document.getElementById('filterPersonnel').value = '';
         applyFiltersAndRender();
     }
 
@@ -309,7 +302,7 @@ if (!loggedInCompanyId && !loggedInUserId) {
     }
 
 
-    // === AYLIK RAPORLAR MODALI VE FİLTRELEME ===
+    // === AYLIK RAPORLAR MODALI (tarih filtreleri kaldırıldı) ===
     const MONTHLY_REPORTS_URL = "http://localhost:8080/admin-dashboard/job-reports/last-month";
     function openMonthlyReports() {
       const modal = document.getElementById('monthlyModal'); const tbody = document.getElementById('monthlyTbody');
@@ -332,20 +325,26 @@ if (!loggedInCompanyId && !loggedInUserId) {
 
     }
     function applyMonthlyFiltersAndRender() {
-        const status = document.getElementById('monthlyFilterStatus').value, sender = document.getElementById('monthlyFilterSender').value.toLowerCase(), writer = document.getElementById('monthlyFilterWriter').value.toLowerCase(), department = document.getElementById('monthlyFilterDepartment').value;
-        const dateType = document.getElementById('monthlyFilterDateType').value, startDate = document.getElementById('monthlyFilterDateStart').value, endDate = document.getElementById('monthlyFilterDateEnd').value;
+        const status = document.getElementById('monthlyFilterStatus').value;
+        const sender = document.getElementById('monthlyFilterSender').value.toLowerCase();
+        const writer = document.getElementById('monthlyFilterWriter').value.toLowerCase();
+        const department = document.getElementById('monthlyFilterDepartment').value;
+
         const filteredReports = monthlyReportsData.filter(report => {
-            if (status && report.status !== status) return false; if (department && report.department !== department) return false;
-            if (sender && !(report.gonderenIsmi || '').toLowerCase().includes(sender)) return false; if (writer && !(report.raporuYazanAdSoyad || '').toLowerCase().includes(writer)) return false;
-            if (startDate || endDate) { const reportDateStr = report[dateType]; if (!checkDate(reportDateStr, startDate, endDate)) return false; }
+            if (status && report.status !== status) return false;
+            if (department && report.department !== department) return false;
+            if (sender && !(report.gonderenIsmi || '').toLowerCase().includes(sender)) return false;
+            if (writer && !(report.raporuYazanAdSoyad || '').toLowerCase().includes(writer)) return false;
             return true;
         });
+
         renderMonthlyRows(filteredReports);
     }
     function clearMonthlyFiltersAndRender() {
-        document.getElementById('monthlyFilterStatus').value = ''; document.getElementById('monthlyFilterSender').value = ''; document.getElementById('monthlyFilterWriter').value = '';
-        document.getElementById('monthlyFilterDepartment').value = ''; document.getElementById('monthlyFilterDateType').value = 'atanmaTarihi';
-        document.getElementById('monthlyFilterDateStart').value = ''; document.getElementById('monthlyFilterDateEnd').value = '';
+        document.getElementById('monthlyFilterStatus').value = '';
+        document.getElementById('monthlyFilterSender').value = '';
+        document.getElementById('monthlyFilterWriter').value = '';
+        document.getElementById('monthlyFilterDepartment').value = '';
         applyMonthlyFiltersAndRender();
     }
 
