@@ -79,7 +79,7 @@ th.col-id, td.col-id {
 .status-badge {
     padding: 5px 10px;
     border-radius: 5px;
-    color: black;
+    color: white;
     font-weight: bold;
     display: inline-block;
 }
@@ -91,13 +91,17 @@ th.col-id, td.col-id {
 .status-TAMAMLANDI { background-color: green; }
 .status-REDDEDILDI {
     background-color: #ffc107;
-    color: #000;
+    color: white;
 }
 
 /* === BUTONLAR VE FORM ELEMANLARI === */
 select, button {
     padding: 5px;
 
+}
+
+.top-bar-buttons button:nth-child(2){
+background-color:red;
 }
 
 button.accept-btn {

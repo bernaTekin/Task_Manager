@@ -205,7 +205,7 @@ table td:nth-child(10) {
 .status-badge {
     padding: 5px var(--badge-padding-x);
     border-radius: 5px;
-    color: black;
+    color: white;
     font-weight: bold;
     display: inline-block;
     font-size: var(--badge-font-size);
@@ -220,7 +220,7 @@ table td:nth-child(10) {
 .status-TAMAMLANDI { background-color: green; }
 .status-REDDEDILDI {
     background-color: #ffc107;
-    color: #000;
+    color: white;
 }
 
 /* === BUTON VE FORM ELEMANLARI === */
@@ -265,7 +265,7 @@ select, button {
 }
 
 .hover-container button:hover {
-  background-color: #45a049;  /* hover rengi */
+  background-color: #1A75FF;  /* hover rengi */
   transform: translateY(-2px); /* hafif yukarı kayma efekti */
 }
 
@@ -299,7 +299,7 @@ button.complete-btn {
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 5px 8px;
+    padding: 5px 12px;
     cursor: pointer;
     border-radius: 4px;
     margin-bottom: 5px;
@@ -312,6 +312,7 @@ button.reject-btn {
     padding: 5px 8px;
     cursor: pointer;
     border-radius: 4px;
+    margin-bottom: 5px;
 }
 
 .assign-btn {
@@ -325,23 +326,23 @@ button.reject-btn {
 }
 
 button.delete-btn {
-    background-color: #333333;
+    background-color: #a0a0a0;
     color: white;
     border: none;
-    padding: 5px 8px;
+    padding: 5px 42px;
     cursor: pointer;
     border-radius: 4px;
-    margin: 5px;
+    margin-bottom: 5px;
 }
 
 .save-btn {
-    padding: 10px 20px;
-    border: none;
-    background-color: #007bff;
     color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+        border: none;
+        padding: 5px 8px;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        background-color:#007bff
 }
 .save-btn:hover {
     background-color: #0056b3;
@@ -451,7 +452,6 @@ th.col-id, td.col-id {
     min-width: 3ch;
 }
 
-
 /* Modallere özel hizalamalar ve boyutlandırmalar */
 .modal-table td:nth-child(8) {
     text-align: center;
@@ -490,11 +490,28 @@ th.col-id, td.col-id {
     height: 90vh;
 }
 
+.pdf-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.pdf-btn:hover {
+  background-color: #003366;
+}
+
+
 /* === FORM STİLLERİ === */
 .form-group {
     margin-bottom: 15px;
     display: flex;
     flex-direction: column;
+
 }
 
 .form-group label {
@@ -514,6 +531,14 @@ th.col-id, td.col-id {
 .form-actions {
     text-align: right;
     margin-top: 20px;
+}
+#userRole{
+padding: 8px 12px;           /* İç boşluk */
+    border: 1px solid #ccc;      /* Kenarlık */
+    border-radius: 6px;          /* Yuvarlatılmış köşeler */
+    font-size: 14px;             /* Yazı boyutu */
+    color: #333;                 /* Yazı rengi */
+    background-color: #fff;
 }
 
 
