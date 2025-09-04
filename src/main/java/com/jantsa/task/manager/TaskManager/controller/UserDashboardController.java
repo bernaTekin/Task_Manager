@@ -2,12 +2,14 @@ package com.jantsa.task.manager.TaskManager.controller;
 
 
 import com.jantsa.task.manager.TaskManager.dto.BugReportRequestDto;
+import com.jantsa.task.manager.TaskManager.dto.BugReportResponseDTO;
 import com.jantsa.task.manager.TaskManager.service.UserDashBoardImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -29,7 +31,6 @@ public class UserDashboardController {
         userDashBoard.save(request);
         return ResponseEntity.ok("Talep başarıyla kaydedildi");
     }
-
 
     @GetMapping("/change-password")
     public String loadChangePasswordPage() {

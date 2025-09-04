@@ -9,27 +9,46 @@
 
 <div class="sidebar">
     <div class="sidebar-buttons">
+        <button onclick="showNewRequest()">Ana Sayfa</button>
         <button onclick="changePassword()">Şifre Değiştir</button>
         <button onclick="logout()">Çıkış Yap</button>
+        <button onclick="openMyRequests()">Taleplerim</button>
     </div>
 </div>
 
+
 <div class="content-area">
     <button id="sidebar-toggle" title="Menüyü Gizle/Göster">
-        <div class="hamburger-icon">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+        <div class="hamburger-icon"><div></div><div></div><div></div></div>
     </button>
-
-    <div class="main-container">
+    <div class="main-container" id="newRequestContainer">
         <h1>Yeni Talep Oluştur</h1>
         <input type="text" id="taskHeader" placeholder="Talep Başlığı">
         <textarea id="requestInput" placeholder="Talebinizi buraya yazın..."></textarea>
         <button class="submit-button" onclick="submitRequest()">Gönder</button>
     </div>
 </div>
+    <!-- Taleplerim Bölümü (başta gizli) -->
+<div id="my-requests-content"
+     style="display:none; margin-top:20px; margin-left:250px; overflow-x:auto;">
+    <h1>Taleplerim</h1>
+    <table border="1" cellpadding="5" cellspacing="0"
+           style="width:100%; border-collapse: collapse; table-layout: fixed; word-wrap: break-word;">
+        <thead>
+        <tr>
+            <th style="width:50px;">ID</th>
+            <th>Başlık</th>
+            <th>İçerik</th>
+            <th>Durum</th>
+            <th>Tarih</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+
+
+
 
 <script src="UserDashBoardScript.js"></script>
 <script>

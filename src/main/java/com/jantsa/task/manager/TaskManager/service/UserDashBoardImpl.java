@@ -2,6 +2,7 @@ package com.jantsa.task.manager.TaskManager.service;
 
 
 import com.jantsa.task.manager.TaskManager.dto.BugReportRequestDto;
+import com.jantsa.task.manager.TaskManager.dto.BugReportResponseDTO;
 import com.jantsa.task.manager.TaskManager.dto.CreateUserRequestDto;
 import com.jantsa.task.manager.TaskManager.entity.Report;
 import com.jantsa.task.manager.TaskManager.entity.User;
@@ -29,7 +30,6 @@ public class UserDashBoardImpl implements UserDashBoard{
 
     @Autowired
     BugReportRepository bugReportRepository;
-
 
     @Override
     public boolean changePassword(Integer companyId, String oldPassword, String newPassword) {

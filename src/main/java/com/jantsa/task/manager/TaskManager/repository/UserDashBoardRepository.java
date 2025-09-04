@@ -12,4 +12,5 @@ public interface UserDashBoardRepository extends JpaRepository<User,Integer> {
 
     Optional<User> findByCompanyId(Integer companyId);
 
+
 }

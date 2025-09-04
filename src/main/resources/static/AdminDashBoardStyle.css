@@ -203,21 +203,22 @@ table td:nth-child(10) {
 
 /* === DURUM ETİKETLERİ (BADGE) === */
 .status-badge {
-    padding: 5px var(--badge-padding-x);
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    display: inline-block;
-    font-size: var(--badge-font-size);
-    transition: font-size 0.2s ease, padding 0.2s ease;
-    white-space: nowrap;
+    padding: 5px 10px; /* var(--badge-padding-x) yerine sabit değer deneyebilirsin */
+       border-radius: 5px;
+       color: white;
+       font-weight: bold;
+       display: inline-block;
+       font-size: var(--badge-font-size, 12px);
+       line-height: 1; /* bu çok önemli */
+       transition: font-size 0.2s ease, padding 0.2s ease;
+       white-space: nowrap;
 }
 
 .status-BEKLIYOR { background-color: gray; }
 .status-ATANDI { background-color: orange; }
 .status-AKTIF { background-color: #007bff; }
 .status-IPTAL { background-color: red; }
-.status-TAMAMLANDI { background-color: green; }
+.status-TAMAMLANDI { background-color: green;  }
 .status-REDDEDILDI {
     background-color: #ffc107;
     color: white;

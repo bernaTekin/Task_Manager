@@ -16,9 +16,8 @@ import java.util.List;
 
 @Repository
 public interface BugReportRepository extends JpaRepository<Report,Integer> {
-
     List<Report> findByPersonalId(Integer personalId);
-    List<Report> findByCompanyId(Integer personalId);
+    List<Report> findByCompanyId(Integer personalId);//personel ıd yazıyodu
     //ArrayList<BugReportResponseDTO> findByPersonalId(Integer personalId);
     List<Report> findByPersonalIdAndIsActivePersonelTrue(Integer personalId);
 

@@ -93,9 +93,30 @@
         </div>
         <table>
             <thead>
-            <tr>
-                <th class="col-id">ID</th>
-                <th>Başlık</th>
+            <th class="col-id" style="width:50px; text-align:center; position:relative;">
+                ID
+                <div style="display:inline-block; position:relative;">
+                    <button id="idSortBtn" style="padding:0 2px; font-size:9px; cursor:pointer; margin-left:1px;">▼</button>
+                    <div id="idSortMenu" style="
+        display:none;
+        position:absolute;
+        top:16px;
+        left:0;
+        transform: translateX(-25%);
+        background:white;
+        border:1px solid #ccc;
+        border-radius:4px;
+        box-shadow:0 2px 5px rgba(0,0,0,0.2);
+        z-index:10;
+        min-width:90px;
+        text-align:left;">
+                        <div class="sortOption" data-order="asc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Küçükten Büyüğe</div>
+                        <div class="sortOption" data-order="desc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Büyükten Küçüğe</div>
+                    </div>
+                </div>
+            </th>
+
+            <th>Başlık</th>
                 <th>Gönderen Kişi</th>
                 <th>İçerik</th>
                 <th>Durum</th>

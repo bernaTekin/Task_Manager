@@ -200,7 +200,7 @@ if (!loggedInCompanyId && !loggedInUserId) {
          </td>
 
 
-          <td><select id="departmentSelect-${report.id}" style="margin-bottom: 5px;"><option value="YAZILIM">Yazılım</option><option value="DONANIM">Donanım</option><option value="HEPSI">Hepsi</option></select><select id="personnelSelect-${report.id}"><option value="">Seçiniz</option>${personnelList.map(p => `<option value="${p.companyId}" ${p.id === report.personalId ? 'selected' : ''}>${p.name} ${p.surName} (${p.companyId})</option>`).join('')}</select><button class="assign-btn" onclick="assignPersonnel(${report.id})">Tamam</button></td>
+          <td style="text-align:center;"><select id="departmentSelect-${report.id}" style="margin-bottom:5px; padding:6px 10px; border:1px solid #ccc; border-radius:6px; background:#f9f9f9; font-size:14px; cursor:pointer;"><option value="YAZILIM">Yazılım</option><option value="DONANIM">Donanım</option><option value="HEPSI">Hepsi</option></select><select id="personnelSelect-${report.id}" style="margin-bottom:5px; padding:6px 10px; border:1px solid #ccc; border-radius:6px; background:#f9f9f9; font-size:14px; cursor:pointer;" ><option value="">Seçiniz</option>${personnelList.map(p => `<option value="${p.companyId}" ${p.id === report.personalId ? 'selected' : ''}>${p.name} ${p.surName} (${p.companyId})</option>`).join('')}</select><button class="assign-btn" onclick="assignPersonnel(${report.id})" style="padding:6px 12px; border:none; border-radius:6px; font-size:14px; cursor:pointer;">Tamam</button></td>
           <td>${actionButtonsHtml}</td>`;
         tbody.appendChild(row);
       });
@@ -590,4 +590,39 @@ if (!loggedInCompanyId && !loggedInUserId) {
         document.getElementById('clearMonthlyFilterBtn').addEventListener('click', clearMonthlyFiltersAndRender);
         document.getElementById('userSearchInput').addEventListener('input', applyUserFilters);
     });
+    //id için açılır kapanır kısım
+    const sortBtn = document.getElementById('idSortBtn');
+    const sortMenu = document.getElementById('idSortMenu');
+
+    sortBtn.addEventListener('click', () => {
+        sortMenu.style.display = sortMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Menü dışına tıklayınca kapat
+    document.addEventListener('click', (e) => {
+        if (!sortBtn.contains(e.target) && !sortMenu.contains(e.target)) {
+            sortMenu.style.display = 'none';
+        }
+    });
+
+    // Sıralama seçenekleri
+    document.querySelectorAll('.sortOption').forEach(option => {
+        option.addEventListener('click', (e) => {
+            const order = e.target.dataset.order;
+            sortReportsById(order);
+            sortMenu.style.display = 'none';
+        });
+    });
+
+    function sortReportsById(order) {
+        const tbody = document.getElementById('reportBody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.sort((a, b) => {
+            const idA = parseInt(a.querySelector('.col-id').innerText);
+            const idB = parseInt(b.querySelector('.col-id').innerText);
+            return order === 'asc' ? idA - idB : idB - idA;
+        });
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
 }

@@ -150,6 +150,13 @@ textarea {
     background-color: #218838;
 }
 
+#my-requests-content {
+    display: none;
+    margin-top: 20px;   /* mevcut */
+    padding-top: 30px;  /* başlığı aşağıya alır */
+}
+
+
 /* === RESPONSIVE (DUYARLI) TASARIM === */
 @media (max-width: 768px) {
     .sidebar {

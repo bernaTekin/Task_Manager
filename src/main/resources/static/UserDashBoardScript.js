@@ -71,4 +71,26 @@ if (!loggedInCompanyId && !loggedInUserId) {
     localStorage.removeItem("userId");
     window.location.href = "http://localhost:8080/task/login";
   }
+function openMyRequests() {
+    document.getElementById('newRequestContainer').style.display = 'none';
+    document.getElementById('my-requests-content').style.display = 'block';
 }
+function showNewRequest() {
+    // Talep oluşturma bölümünü göster
+    const newRequest = document.getElementById('newRequestContainer');
+    newRequest.style.display = 'block';
+
+    // Diğer bölümleri gizle
+    const other = document.getElementById('otherSection');
+    if (other) other.style.display = 'none';
+
+}
+
+}
+
+
+
+
+
+
+
