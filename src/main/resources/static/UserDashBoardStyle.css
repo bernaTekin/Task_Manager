@@ -152,10 +152,14 @@ textarea {
 
 #my-requests-content {
     display: none;
-    margin-top: 20px;   /* mevcut */
-    padding-top: 30px;  /* başlığı aşağıya alır */
+       margin-left: 250px;
+       margin-top: 30px;   /*  tabloyu ve başlığı biraz aşağı alır */
+       overflow-x: auto;
+       position: relative;
 }
-
+#my-requests-content h1 {
+    margin-bottom: 10px; /* başlık ile tablo arasındaki boşluğu da küçülttük */
+}
 
 /* === RESPONSIVE (DUYARLI) TASARIM === */
 @media (max-width: 768px) {
@@ -180,3 +184,75 @@ textarea {
         padding: 20px;
     }
 }
+.status-badge {
+   padding: 5px 10px; /* var(--badge-padding-x) yerine sabit değer deneyebilirsin */
+          border-radius: 5px;
+          color: white;
+          font-weight: bold;
+          display: inline-block;
+          font-size: var(--badge-font-size, 12px);
+          line-height: 1; /* bu çok önemli */
+          transition: font-size 0.2s ease, padding 0.2s ease;
+          white-space: nowrap;
+          display: flex;             /* Flexbox kullan */
+          justify-content: center;   /* yatay ortalama */
+          align-items: center;
+          display: inline-block;
+}
+#my-requests-content table th:nth-child(4),
+#my-requests-content table td.status-cell {
+    width:130px;
+    white-space:nowrap;
+    text-align: center;  /* hücre içindeki içeriği ortalar */
+    vertical-align: middle; /* dikeyde de ortalar */
+}
+
+.status-BEKLIYOR { background-color: gray; }
+.status-ATANDI { background-color: orange; }
+.status-AKTIF { background-color: #007bff; }
+.status-IPTAL { background-color: red; }
+.status-TAMAMLANDI { background-color: green;  }
+.status-REDDEDILDI {
+    background-color: #ffc107;
+    color: white;
+}
+.date-cell {
+    width: 160px; /* isteğe göre daraltabilirsiniz */
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.date-label {
+    display: block;
+    background-color: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    font-size: 11px;
+    color: #333;
+}
+.date-cell span {
+    display: block;           /* her tarih kendi satırında */
+    font-size: 12px;          /* biraz okunaklı boyut */
+    margin-bottom: 2px;
+}
+
+.date-cell span strong {
+    font-weight: bold;        /* Talep:, Atanma: vb. kalın */
+    color: #222;              /* isteğe göre renk */
+    margin-right: 4px;
+    text-decoration: underline; /* altını çizmek istersen */
+}
+#my-requests-content table th {
+    font-size: 14px; /* İstediğin boyutu buradan ayarlayabilirsin */
+    font-weight: bold; /* Başlıkları kalın yapar */
+    text-align: center; /* ID gibi ortalanmış olmasını sağlar */
+    padding: 10px; /* Başlık hücrelerine biraz boşluk ekler */
+}
+body.sidebar-collapsed #my-requests-content {
+    margin-left: 50px;   /* sidebar kapanınca tabloyu biraz ortaya kaydır */
+    margin-right: 50px;  /* sağdan da boşluk vererek daha ortalı görünmesini sağla */
+}
+
+

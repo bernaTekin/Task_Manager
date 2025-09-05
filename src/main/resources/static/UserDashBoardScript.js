@@ -71,23 +71,89 @@ if (!loggedInCompanyId && !loggedInUserId) {
     localStorage.removeItem("userId");
     window.location.href = "http://localhost:8080/task/login";
   }
+function showNewRequest() {
+    document.getElementById('newRequestContainer').style.display = 'block';
+    document.getElementById('my-requests-content').style.display = 'none';
+}
+
 function openMyRequests() {
     document.getElementById('newRequestContainer').style.display = 'none';
     document.getElementById('my-requests-content').style.display = 'block';
-}
-function showNewRequest() {
-    // Talep oluşturma bölümünü göster
-    const newRequest = document.getElementById('newRequestContainer');
-    newRequest.style.display = 'block';
-
-    // Diğer bölümleri gizle
-    const other = document.getElementById('otherSection');
-    if (other) other.style.display = 'none';
-
+    loadMyRequests();
 }
 
+function loadMyRequests() {
+    const companyId = localStorage.getItem("companyId");
+
+    fetch(`http://localhost:8080/user-dashboard/requests?companyId=${companyId}`)
+        .then(response => response.json())
+        .then(data => {
+            const table = document.querySelector("#my-requests-content table");
+            const tbody = document.createElement("tbody");
+            tbody.innerHTML = ""; // önceki satırları temizle
+
+            data.forEach(r => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td style="text-align:center;">${r.id}</td>
+                    <td>${r.header}</td>
+                    <td>${r.body}</td>
+                    <td class="status-cell"><span class="status-badge status-${r.status}">${r.status}</span></td>
+                    <td class="date-cell">
+                      <span><strong>Talep:</strong> ${r.talep_date ? new Date(r.talep_date).toLocaleString() : '-'}</span>
+                         <span><strong>Atanma:</strong> ${r.atanma_date ? new Date(r.atanma_date).toLocaleString() : '-'}</span>
+                         <span><strong>Kabul:</strong> ${r.kabul_date ? new Date(r.kabul_date).toLocaleString() : '-'}</span>
+                         <span><strong>Bitiş:</strong> ${r.bitis_date ? new Date(r.bitis_date).toLocaleString() : '-'}</span>
+                         <span><strong>İptal:</strong> ${r.iptal_date ? new Date(r.iptal_date).toLocaleString() : '-'}</span>
+                     </td>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // önce tbody varsa kaldır, sonra ekle
+            const oldTbody = table.querySelector("tbody");
+            if (oldTbody) table.removeChild(oldTbody);
+            table.appendChild(tbody);
+
+            document.getElementById("my-requests-content").style.display = "block";
+        })
+        .catch(err => console.error("Talepler yüklenirken hata oluştu:", err));
+}
+const idSortBtn = document.getElementById("idSortBtn");
+const idSortMenu = document.getElementById("idSortMenu");
+
+// Menü aç/kapa
+idSortBtn.addEventListener("click", () => {
+    idSortMenu.style.display = idSortMenu.style.display === "block" ? "none" : "block";
+});
+
+// Menü seçenekleri
+document.querySelectorAll("#idSortMenu .sortOption").forEach(option => {
+    option.addEventListener("click", (e) => {
+        const order = e.target.getAttribute("data-order");
+        sortTableById(order);
+        idSortMenu.style.display = "none";
+    });
+});
+
+// ID’ye göre sıralama fonksiyonu
+function sortTableById(order) {
+    const table = document.querySelector("#my-requests-content table");
+    const tbody = table.querySelector("tbody");
+    if (!tbody) return;
+
+    Array.from(tbody.rows)
+        .sort((a, b) => {
+            let valA = parseInt(a.cells[0].textContent);
+            let valB = parseInt(b.cells[0].textContent);
+            return order === "asc" ? valA - valB : valB - valA;
+        })
+        .forEach(row => tbody.appendChild(row));
 }
 
+
+}
 
 
 

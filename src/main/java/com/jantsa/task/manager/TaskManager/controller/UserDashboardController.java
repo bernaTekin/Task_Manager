@@ -19,11 +19,17 @@ public class UserDashboardController {
     @Autowired
     UserDashBoardImpl userDashBoard;
 
-
     @GetMapping
     public String getUserDashboard() {
 
         return "/UserDashBoard";
+    }
+
+    @GetMapping("/requests")
+    @ResponseBody
+    public ResponseEntity<List<BugReportResponseDTO>> getRequestsByCompany(@RequestParam Integer companyId) {
+        List<BugReportResponseDTO> requests = userDashBoard.getRequestsByCompany(companyId);
+        return ResponseEntity.ok(requests);
     }
 
     @PostMapping("/new")

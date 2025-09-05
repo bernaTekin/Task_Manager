@@ -22,6 +22,8 @@ import java.util.Optional;
 @Service
 public class UserDashBoardImpl implements UserDashBoard{
 
+
+
     @Autowired
     UserRepository userRepository;
 
@@ -30,6 +32,7 @@ public class UserDashBoardImpl implements UserDashBoard{
 
     @Autowired
     BugReportRepository bugReportRepository;
+
 
     @Override
     public boolean changePassword(Integer companyId, String oldPassword, String newPassword) {
@@ -67,6 +70,29 @@ public class UserDashBoardImpl implements UserDashBoard{
         new_report.setGonderen_isim(isim + " " + soyisim);
         bugReportRepository.save(new_report);
     }
+
+    public List<BugReportResponseDTO> getRequestsByCompany(Integer companyId) {// talep getirme için sonradan eklendi
+        return bugReportRepository.findByCompanyId(companyId)
+                .stream()
+                .map(report -> new BugReportResponseDTO(
+                        report.getId(),
+                        report.getHeader(),
+                        report.getBody(),
+                        report.getCompanyId(),
+                        report.getStatus(),
+                        report.getTalep_date(),
+                        report.getAtanma_date(),
+                        report.getIptal_date(),
+                        report.getKabul_date(),
+                        report.getBitis_date(),
+                        report.getGonderen_isim(),
+                        report.getPersonalId(),
+                        report.getPersonal_name(),
+                        report.isActiveAdmin(),
+                        report.isActivePersonel(),
+                        report.getDepartment()
+                ))
+                .toList();}
     @Override
     public List<User> findByUserRole() {
         return List.of();
