@@ -591,38 +591,51 @@ if (!loggedInCompanyId && !loggedInUserId) {
         document.getElementById('userSearchInput').addEventListener('input', applyUserFilters);
     });
     //id için açılır kapanır kısım
-    const sortBtn = document.getElementById('idSortBtn');
-    const sortMenu = document.getElementById('idSortMenu');
+    // ID kolonuna tıklayınca sıralama
+    const idHeader = document.getElementById('idHeader');
+    const idSortMenu = document.getElementById('idSortMenu');
 
-    sortBtn.addEventListener('click', () => {
-        sortMenu.style.display = sortMenu.style.display === 'block' ? 'none' : 'block';
+    // ID başlığına tıklayınca menüyü aç/kapa
+    idHeader.addEventListener('click', function(event) {
+        event.stopPropagation(); // Menü dışında tıklamayı engelle
+        idSortMenu.style.display = idSortMenu.style.display === 'block' ? 'none' : 'block';
     });
 
-    // Menü dışına tıklayınca kapat
-    document.addEventListener('click', (e) => {
-        if (!sortBtn.contains(e.target) && !sortMenu.contains(e.target)) {
-            sortMenu.style.display = 'none';
+    // Menüde seçeneklere tıklayınca sıralama uygula
+    idSortMenu.querySelectorAll('.sortOption').forEach(option => {
+        option.addEventListener('click', function() {
+            const order = this.getAttribute('data-order');
+            sortTableById(order); // Bu fonksiyonu tablonu sıralamak için yaz
+            idSortMenu.style.display = 'none';
+        });
+    });
+
+    // Sayfanın başka yerine tıklayınca menüyü kapat
+    document.addEventListener('click', () => {
+        idSortMenu.style.display = 'none';
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("applyMonthlyFilterBtn").click();
         }
     });
 
-    // Sıralama seçenekleri
-    document.querySelectorAll('.sortOption').forEach(option => {
-        option.addEventListener('click', (e) => {
-            const order = e.target.dataset.order;
-            sortReportsById(order);
-            sortMenu.style.display = 'none';
-        });
-    });
-
-    function sortReportsById(order) {
-        const tbody = document.getElementById('reportBody');
-        const rows = Array.from(tbody.querySelectorAll('tr'));
+    // Örnek tablo sıralama fonksiyonu
+    function sortTableById(order) {
+        const table = document.querySelector('#reportBody').parentElement;
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
         rows.sort((a, b) => {
-            const idA = parseInt(a.querySelector('.col-id').innerText);
-            const idB = parseInt(b.querySelector('.col-id').innerText);
-            return order === 'asc' ? idA - idB : idB - idA;
+            const aId = parseInt(a.querySelector('.col-id')?.textContent || a.children[0].textContent);
+            const bId = parseInt(b.querySelector('.col-id')?.textContent || b.children[0].textContent);
+            return order === 'asc' ? aId - bId : bId - aId;
         });
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = '';
         rows.forEach(row => tbody.appendChild(row));
     }
+
+
 
 }

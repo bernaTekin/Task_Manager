@@ -91,53 +91,60 @@ function loadMyRequests() {
             const table = document.querySelector("#my-requests-content table");
             const tbody = document.createElement("tbody");
             tbody.innerHTML = ""; // önceki satırları temizle
+           console.log(data);
+           data.forEach(r => {
+               const tr = document.createElement("tr");
 
-            data.forEach(r => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td style="text-align:center;">${r.id}</td>
-                    <td>${r.header}</td>
-                    <td>${r.body}</td>
-                    <td class="status-cell"><span class="status-badge status-${r.status}">${r.status}</span></td>
-                    <td class="date-cell">
-                      <span><strong>Talep:</strong> ${r.talep_date ? new Date(r.talep_date).toLocaleString() : '-'}</span>
-                         <span><strong>Atanma:</strong> ${r.atanma_date ? new Date(r.atanma_date).toLocaleString() : '-'}</span>
-                         <span><strong>Kabul:</strong> ${r.kabul_date ? new Date(r.kabul_date).toLocaleString() : '-'}</span>
-                         <span><strong>Bitiş:</strong> ${r.bitis_date ? new Date(r.bitis_date).toLocaleString() : '-'}</span>
-                         <span><strong>İptal:</strong> ${r.iptal_date ? new Date(r.iptal_date).toLocaleString() : '-'}</span>
-                     </td>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+               const dateCellContent = `
 
-            // önce tbody varsa kaldır, sonra ekle
+                   <button class="date-detail-btn">Detaylar</button>
+                   <div class="date-hover-details">
+                       <div><strong>Talep:</strong> ${r.talep_date ? new Date(r.talep_date).toLocaleString() : '-'}</div>
+                       <div><strong>Atanma:</strong> ${r.atanma_date ? new Date(r.atanma_date).toLocaleString() : '-'}</div>
+                       <div><strong>Kabul:</strong> ${r.kabul_date ? new Date(r.kabul_date).toLocaleString() : '-'}</div>
+                       <div><strong>Bitiş:</strong> ${r.bitis_date ? new Date(r.bitis_date).toLocaleString() : '-'}</div>
+                       <div><strong>İptal:</strong> ${r.iptal_date ? new Date(r.iptal_date).toLocaleString() : '-'}</div>
+                   </div>
+               `;
+
+               tr.innerHTML = `
+                   <td style="text-align:center;">${r.id}</td>
+                   <td>${r.header}</td>
+                   <td>${r.body}</td>
+                   <td class="status-cell"><span class="status-badge status-${r.status}">${r.status}</span></td>
+                   <td class="date-cell">${dateCellContent}</td>
+               `;
+
+               tbody.appendChild(tr);
+           });
+
+
+            // önceki tbody varsa kaldır
             const oldTbody = table.querySelector("tbody");
             if (oldTbody) table.removeChild(oldTbody);
             table.appendChild(tbody);
+
+            // **Varsayılan olarak ID’ye göre büyükten küçüğe sırala**
+            sortTableById("desc");
 
             document.getElementById("my-requests-content").style.display = "block";
         })
         .catch(err => console.error("Talepler yüklenirken hata oluştu:", err));
 }
-const idSortBtn = document.getElementById("idSortBtn");
+
 const idSortMenu = document.getElementById("idSortMenu");
 
-// Menü aç/kapa
-idSortBtn.addEventListener("click", () => {
-    idSortMenu.style.display = idSortMenu.style.display === "block" ? "none" : "block";
-});
 
-// Menü seçenekleri
+// Menü seçenekleri tıklandığında sıralama yapacak
 document.querySelectorAll("#idSortMenu .sortOption").forEach(option => {
-    option.addEventListener("click", (e) => {
-        const order = e.target.getAttribute("data-order");
-        sortTableById(order);
-        idSortMenu.style.display = "none";
+    option.addEventListener("click", function () {
+        const order = this.getAttribute("data-order");
+        sortTableById(order); // sıralama fonksiyonunu çağır
+        document.getElementById("idSortMenu").style.display = "none"; // menüyü kapat
     });
 });
 
-// ID’ye göre sıralama fonksiyonu
+// ID sütununa göre tabloyu sıralayan fonksiyon
 function sortTableById(order) {
     const table = document.querySelector("#my-requests-content table");
     const tbody = table.querySelector("tbody");
@@ -145,12 +152,14 @@ function sortTableById(order) {
 
     Array.from(tbody.rows)
         .sort((a, b) => {
-            let valA = parseInt(a.cells[0].textContent);
-            let valB = parseInt(b.cells[0].textContent);
+            // Hücre değerini trimleyip parseInt ile al, NaN ise 0 yap
+            let valA = parseInt(a.cells[0].textContent.trim()) || 0;
+            let valB = parseInt(b.cells[0].textContent.trim()) || 0;
             return order === "asc" ? valA - valB : valB - valA;
         })
         .forEach(row => tbody.appendChild(row));
 }
+
 
 
 }

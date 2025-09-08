@@ -17,7 +17,7 @@
         <li><a href="#" onclick="handleHomepageClick(); return false;">Anasayfa</a></li>
         <li><a href="#" onclick="showPage('task-management-content'); return false;">Görev Yönetimi</a></li>
         <li><a href="#" onclick="openMonthlyReports(); return false;">Raporları Göster</a></li>
-        <li><a href="#" onclick="openUserInfoModal(); return false;">Personel Bilgileri</a></li>
+        <li><a href="/admin-dashboard/all-personal-page">Personel Bilgileri</a></li>
         <li><a href="#" onclick="openAddUserModal(); return false;">Kullanıcı Ekle</a></li>
         <li><a href="#" onclick="changePassword(); return false;">Şifre Değiştir</a></li>
         <li><a href="#" onclick="logout(); return false;">Çıkış Yap</a></li>
@@ -60,6 +60,7 @@
                     <option value="">Tümü</option>
                     <option value="BEKLIYOR">Bekliyor</option>
                     <option value="ATANDI">Atandı</option>
+                    <option value="AKTIF">Aktıf</option>
                     <option value="TAMAMLANDI">Tamamlandı</option>
                     <option value="IPTAL">İptal</option>
                     <option value="REDDEDILDI">Reddedildi (İptal Talebi)</option>
@@ -93,38 +94,36 @@
         </div>
         <table>
             <thead>
-            <th class="col-id" style="width:50px; text-align:center; position:relative;">
+            <th class="col-id" style="width:50px; text-align:center; position:relative; cursor:pointer;" id="idHeader">
                 ID
-                <div style="display:inline-block; position:relative;">
-                    <button id="idSortBtn" style="padding:0 2px; font-size:9px; cursor:pointer; margin-left:1px;">▼</button>
-                    <div id="idSortMenu" style="
+                <div id="idSortMenu" style="
         display:none;
         position:absolute;
-        top:16px;
+        top:100%;
         left:0;
-        transform: translateX(-25%);
         background:white;
         border:1px solid #ccc;
         border-radius:4px;
         box-shadow:0 2px 5px rgba(0,0,0,0.2);
         z-index:10;
         min-width:90px;
-        text-align:left;">
-                        <div class="sortOption" data-order="asc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Küçükten Büyüğe</div>
-                        <div class="sortOption" data-order="desc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Büyükten Küçüğe</div>
-                    </div>
+        text-align:left;
+    ">
+                    <div class="sortOption" data-order="asc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Küçükten Büyüğe</div>
+                    <div class="sortOption" data-order="desc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Büyükten Küçüğe</div>
                 </div>
             </th>
 
+
             <th>Başlık</th>
-                <th>Gönderen Kişi</th>
-                <th>İçerik</th>
-                <th>Durum</th>
-                <th>Departman</th>
-                <th>Atanmış Personel</th>
-                <th>Zamanlar</th>
-                <th>Admin İşlemleri</th>
-                <th>İşlemler</th>
+            <th>Gönderen Kişi</th>
+            <th>İçerik</th>
+            <th>Durum</th>
+            <th>Departman</th>
+            <th>Atanmış Personel</th>
+            <th>Zamanlar</th>
+            <th>Admin İşlemleri</th>
+            <th>İşlemler</th>
             </tr>
             </thead>
             <tbody id="reportBody">
@@ -266,6 +265,13 @@
       window.location.href = "http://localhost:8080/task/login";
     }
 </script>
-
+<script>
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Form submit gibi default davranışı engelle
+            document.getElementById("applyFilterBtn").click(); // Filtrele butonunu tetikle
+        }
+    });
+</script>
 </body>
 </html>

@@ -16,6 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import com.jantsa.task.manager.TaskManager.entity.Personal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 
 import java.nio.file.Path;
 import java.util.List;
@@ -35,12 +41,18 @@ public class AdminDashboardController {
 
         return "/AdminDashBoard";
     }
+     /*personel*/
+     @GetMapping("/all-personal-page")
+     public String getAllPersonalPage() {
+         return "all-personal"; // templates klasöründeki HTML render edilir
+     }
+
 
     @GetMapping("/user/{userId}")
     @ResponseBody
     public ResponseEntity<User> getUserById(@PathVariable Integer userId) {
         User user = userDashBoard.findByUserId(userId);
-        if(user != null) {
+        if (user != null) {
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.notFound().build();
@@ -49,13 +61,13 @@ public class AdminDashboardController {
 
     @GetMapping(path = "/all-users")
     @ResponseBody
-    public List<User> getAllPersonal(){
+    public List<User> getAllPersonal() {
         return adminDashBoard.getAllPersonal();
     }
 
     @GetMapping(path = "/all-reports")
     @ResponseBody
-    public List<Report> findAll(){
+    public List<Report> findAll() {
         return adminDashBoard.findAll();
     }
 
@@ -78,13 +90,13 @@ public class AdminDashboardController {
     public Report assignReport(
             @PathVariable Integer id,
             @RequestParam("personalId") Integer companyId,
-            @RequestParam("department")Department department) {
-            return adminDashBoard.assignReport(id, companyId, department);
+            @RequestParam("department") Department department) {
+        return adminDashBoard.assignReport(id, companyId, department);
     }
 
     @PostMapping("/reports/{reportId}/deactivate")
     @ResponseBody
-    public Report delete(@PathVariable Integer reportId){
+    public Report delete(@PathVariable Integer reportId) {
         return adminDashBoard.deactivate(reportId);
     }
 
@@ -149,4 +161,6 @@ public class AdminDashboardController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 }

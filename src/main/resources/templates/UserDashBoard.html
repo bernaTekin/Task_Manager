@@ -36,25 +36,22 @@
         <thead>
         <tr>
             <th style="width:50px; text-align:center; position:relative;">
-                ID
-                <div style="display:inline-block; position:relative;">
-                    <button id="idSortBtn" style="padding:0 2px; font-size:9px; cursor:pointer; margin-left:1px;">▼</button>
-                    <div id="idSortMenu" style="
-                        display:none;
-                        position:absolute;
-                        top:16px;
-                        left:0;
-                        transform: translateX(-25%);
-                        background:white;
-                        border:1px solid #ccc;
-                        border-radius:4px;
-                        box-shadow:0 2px 5px rgba(0,0,0,0.2);
-                        z-index:10;
-                        min-width:90px;
-                        text-align:left;">
-                        <div class="sortOption" data-order="asc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Küçükten Büyüğe</div>
-                        <div class="sortOption" data-order="desc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Büyükten Küçüğe</div>
-                    </div>
+                <span id="idSortTrigger" style="cursor:pointer;">ID</span>
+                <div id="idSortMenu" style="
+        display:none;
+        position:absolute;
+        top:35px;
+        left:0;
+        transform: none;
+        background:white;
+        border:1px solid #ccc;
+        border-radius:4px;
+        box-shadow:0 2px 5px rgba(0,0,0,0.2);
+        z-index:10;
+        min-width:120px;
+        text-align:left;">
+                    <div class="sortOption" data-order="asc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Küçükten Büyüğe</div>
+                    <div class="sortOption" data-order="desc" style="padding:3px 6px; cursor:pointer; white-space:nowrap;">Büyükten Küçüğe</div>
                 </div>
             </th>
             <th>Başlık</th>
@@ -81,6 +78,21 @@
         document.body.classList.toggle('sidebar-collapsed');
     });
 </script>
+<script>
+    const trigger = document.getElementById("idSortTrigger");
+    const menu = document.getElementById("idSortMenu");
 
+    trigger.addEventListener("click", function (e) {
+      e.stopPropagation(); // dış tıklamaya karışmasın
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    });
+
+    // Menü dışına tıklayınca kapat
+    document.addEventListener("click", function (e) {
+      if (!trigger.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = "none";
+      }
+    });
+</script>
 </body>
 </html>

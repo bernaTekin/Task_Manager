@@ -244,15 +244,67 @@ textarea {
     margin-right: 4px;
     text-decoration: underline; /* altını çizmek istersen */
 }
+
 #my-requests-content table th {
     font-size: 14px; /* İstediğin boyutu buradan ayarlayabilirsin */
     font-weight: bold; /* Başlıkları kalın yapar */
     text-align: center; /* ID gibi ortalanmış olmasını sağlar */
-    padding: 10px; /* Başlık hücrelerine biraz boşluk ekler */
+     padding: 12px 10px; /* üst-alt padding ile satır yüksekliği artırılır */
+     vertical-align: middle; /* dikeyde ortalanmış içerik */
 }
+#my-requests-content table td{
+   padding: 15px 12px; /* üst-alt padding ile satır yüksekliği artırılır */
+     vertical-align: middle; /* dikeyde ortalanmış içerik */
+}
+
 body.sidebar-collapsed #my-requests-content {
     margin-left: 50px;   /* sidebar kapanınca tabloyu biraz ortaya kaydır */
     margin-right: 50px;  /* sağdan da boşluk vererek daha ortalı görünmesini sağla */
 }
+
+/* Tarih hücresi hover container */
+.date-cell {
+    position: relative;
+}
+
+/* Hover detay kutusu (başlangıçta gizli) */
+.date-hover-details {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #333;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    z-index: 10;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Hover olunca göster */
+.date-cell:hover .date-hover-details {
+    display: block;
+    opacity: 1;
+}
+
+/* Buton stili */
+.date-detail-btn {
+   background-color: #008CBA; /* mavi ton */
+     color: white;               /* yazı rengi */
+     border: none;               /* kenarlık kaldır */
+     padding: 6px 12px;          /* iç boşluk */
+     border-radius: 6px;         /* kenarları yuvarlat */
+     cursor: pointer;            /* hover ile işaretçi değişir */
+     font-weight: 500;           /* yazı kalınlığı */
+     transition: background 0.3s, transform 0.2s; /* animasyon */
+}
+.date-detail-btn:hover {
+   background-color: #1A75FF;  /* hover rengi */
+   transform: translateY(-2px); /* hafif yukarı kayma efekti */
+}
+
 
 

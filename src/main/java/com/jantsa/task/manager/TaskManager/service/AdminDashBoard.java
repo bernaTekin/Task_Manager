@@ -24,4 +24,5 @@ public interface AdminDashBoard {
     User updateUser(UserUpdateDto userDto);
     List<User> getSearchableUsers();
     void deleteUser(Integer companyId);
+
 }
