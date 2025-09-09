@@ -394,7 +394,7 @@ if (!loggedInCompanyId && !loggedInUserId) {
             ["Rapor Basligi", report.personelRaporBaslik ?? '-'],
             ["Rapor Icerigi", report.personelRaporIcerik ?? '-'],
             ["Durum", report.status ?? '-'],
-            ["Atanma Tarihi", fmt(report.atanmaTarihi)],
+            ["Atama Tarihi", fmt(report.atanmaTarihi)],
             ["Kabul Tarihi", fmt(report.kabulTarihi)],
             ["Iptal Tarihi", fmt(report.iptalTarihi)],
             ["Bitis Tarihi", fmt(report.bitisTarihi)],
@@ -635,6 +635,33 @@ if (!loggedInCompanyId && !loggedInUserId) {
         tbody.innerHTML = '';
         rows.forEach(row => tbody.appendChild(row));
     }
+//personel bilgileri için
+function loadAllUsers() {
+    const tbody = document.getElementById('userInfoTbody');
+    tbody.innerHTML = '<tr><td colspan="5">Yükleniyor...</td></tr>';
+
+    fetch('/admin-dashboard/all-users')
+        .then(res => res.json())
+        .then(users => {
+            tbody.innerHTML = '';
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.surName}</td>
+                    <td>${user.companyId}</td>
+                    <td>${user.userRole}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => {
+            tbody.innerHTML = '<tr><td colspan="5">Kullanıcılar yüklenirken hata oluştu</td></tr>';
+            console.error(err);
+        });
+}
+
 
 
 

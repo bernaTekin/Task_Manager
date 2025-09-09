@@ -1,7 +1,7 @@
 // === KİMLİK DOĞRULAMA KONTROLÜ ===
 const loggedInCompanyId = localStorage.getItem("companyId");
 const loggedInUserId = localStorage.getItem("userId");
-
+console.log("deneme",localStorage);
 if (!loggedInCompanyId && !loggedInUserId) {
   window.location.href = "http://localhost:8080/task/login";
 } else {
@@ -83,6 +83,7 @@ if (!loggedInCompanyId && !loggedInUserId) {
         return res.json();
       })
       .then(data => {
+        console.log(data);
         reports = (data || []).map(normalizeReport);
         renderTable();
       })
@@ -125,12 +126,18 @@ if (!loggedInCompanyId && !loggedInUserId) {
         <td>${report.body ?? ''}</td>
         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
         <td>${report.department || ''}</td>
-        <td>
-          <div><strong>Atandı:</strong> ${fmt(report.assignedAt ?? '-')}</div>
-          <div><strong>Kabul:</strong> ${fmt(report.acceptedAt ?? '-')}</div>
-          <div><strong>Reddedildi:</strong> ${fmt(report.rejectedAt ?? '-')}</div>
-          <div><strong>Tamamlandı:</strong> ${fmt(report.completedAt ?? '-')}</div>
-        </td>
+       <td>
+         <div class="date-detail-wrapper">
+           <button class="date-detail-btn">Detay</button>
+           <div class="date-detail-tooltip">
+             <div><strong>Atandı:</strong> ${fmt(report.talep_date ?? '-')}</div>
+             <div><strong>Kabul:</strong> ${fmt(report.kabul_date ?? '-')}</div>
+             <div><strong>Reddedildi:</strong> ${fmt(report.iptal_date ?? '-')}</div>
+             <div><strong>Tamamlandı:</strong> ${fmt(report.bitis_date ?? '-')}</div>
+           </div>
+         </div>
+       </td>
+
         <td>${actionButtonsHtml}</td>`;
       tbody.appendChild(row);
     });

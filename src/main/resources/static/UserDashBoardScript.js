@@ -91,46 +91,48 @@ function loadMyRequests() {
             const table = document.querySelector("#my-requests-content table");
             const tbody = document.createElement("tbody");
             tbody.innerHTML = ""; // önceki satırları temizle
-           console.log(data);
-           data.forEach(r => {
-               const tr = document.createElement("tr");
 
-               const dateCellContent = `
 
-                   <button class="date-detail-btn">Detaylar</button>
-                   <div class="date-hover-details">
-                       <div><strong>Talep:</strong> ${r.talep_date ? new Date(r.talep_date).toLocaleString() : '-'}</div>
-                       <div><strong>Atanma:</strong> ${r.atanma_date ? new Date(r.atanma_date).toLocaleString() : '-'}</div>
-                       <div><strong>Kabul:</strong> ${r.kabul_date ? new Date(r.kabul_date).toLocaleString() : '-'}</div>
-                       <div><strong>Bitiş:</strong> ${r.bitis_date ? new Date(r.bitis_date).toLocaleString() : '-'}</div>
-                       <div><strong>İptal:</strong> ${r.iptal_date ? new Date(r.iptal_date).toLocaleString() : '-'}</div>
-                   </div>
-               `;
+            const filteredData = data.filter(r => r.activeAdmin !== false);
 
-               tr.innerHTML = `
-                   <td style="text-align:center;">${r.id}</td>
-                   <td>${r.header}</td>
-                   <td>${r.body}</td>
-                   <td class="status-cell"><span class="status-badge status-${r.status}">${r.status}</span></td>
-                   <td class="date-cell">${dateCellContent}</td>
-               `;
+            filteredData.forEach(r => {
+                const tr = document.createElement("tr");
 
-               tbody.appendChild(tr);
-           });
+                const dateCellContent = `
+                    <button class="date-detail-btn">Detaylar</button>
+                    <div class="date-hover-details">
+                        <div><strong>Talep:</strong> ${r.talep_date ? new Date(r.talep_date).toLocaleString() : '-'}</div>
+                        <div><strong>Atanma:</strong> ${r.atanma_date ? new Date(r.atanma_date).toLocaleString() : '-'}</div>
+                        <div><strong>Kabul:</strong> ${r.kabul_date ? new Date(r.kabul_date).toLocaleString() : '-'}</div>
+                        <div><strong>Bitiş:</strong> ${r.bitis_date ? new Date(r.bitis_date).toLocaleString() : '-'}</div>
+                        <div><strong>İptal:</strong> ${r.iptal_date ? new Date(r.iptal_date).toLocaleString() : '-'}</div>
+                    </div>
+                `;
 
+                tr.innerHTML = `
+                    <td style="text-align:center;">${r.id}</td>
+                    <td>${r.header}</td>
+                    <td>${r.body}</td>
+                    <td class="status-cell"><span class="status-badge status-${r.status}">${r.status}</span></td>
+                    <td class="date-cell">${dateCellContent}</td>
+                `;
+
+                tbody.appendChild(tr);
+            });
 
             // önceki tbody varsa kaldır
             const oldTbody = table.querySelector("tbody");
             if (oldTbody) table.removeChild(oldTbody);
             table.appendChild(tbody);
 
-            // **Varsayılan olarak ID’ye göre büyükten küçüğe sırala**
+            // ID’ye göre büyükten küçüğe sırala
             sortTableById("desc");
 
             document.getElementById("my-requests-content").style.display = "block";
         })
         .catch(err => console.error("Talepler yüklenirken hata oluştu:", err));
 }
+
 
 const idSortMenu = document.getElementById("idSortMenu");
 

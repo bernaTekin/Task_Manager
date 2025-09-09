@@ -178,6 +178,51 @@ button.modal-save-btn {
     border-radius: 4px;
     margin: 5px;
 }
+.date-detail-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center; /* Ortala */
+  align-items: center;     /* Dikey ortala */
+}
+
+.date-detail-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.date-detail-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.date-detail-tooltip {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%; /* Butonun üstünde */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none; /* Tooltip’in üzerine gelince tıklamayı engelle */
+}
+
+.date-detail-wrapper:hover .date-detail-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
 
 
 

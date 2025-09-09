@@ -17,7 +17,7 @@
         <li><a href="#" onclick="handleHomepageClick(); return false;">Anasayfa</a></li>
         <li><a href="#" onclick="showPage('task-management-content'); return false;">Görev Yönetimi</a></li>
         <li><a href="#" onclick="openMonthlyReports(); return false;">Raporları Göster</a></li>
-        <li><a href="/admin-dashboard/all-personal-page">Personel Bilgileri</a></li>
+        <li><a href="#" onclick="showPage('all-personnel-content'); loadAllUsers(); return false;">Personel Bilgileri</a></li>
         <li><a href="#" onclick="openAddUserModal(); return false;">Kullanıcı Ekle</a></li>
         <li><a href="#" onclick="changePassword(); return false;">Şifre Değiştir</a></li>
         <li><a href="#" onclick="logout(); return false;">Çıkış Yap</a></li>
@@ -130,6 +130,25 @@
             </tbody>
         </table>
     </div>
+
+    <div id="all-personnel-content" class="page-content" style="display: none;">
+        <h2>Tüm Personeller</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Company ID</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+            <tbody id="userInfoTbody">
+            <tr><td colspan="5">Yükleniyor...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
 
     <div id="monthlyModal" class="modal" aria-hidden="true" role="dialog" aria-label="Son 1 Ay İş Raporları">
         <div class="modal-content" role="document">
